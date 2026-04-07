@@ -56,8 +56,13 @@ ifeq ($(SCENIC_LOCAL_TARGET),cairo-gtk)
 		CFLAGS += -g
 	endif
 
-	LDFLAGS += `pkg-config --static --libs freetype2 cairo gtk+-3.0`
-	CFLAGS += `pkg-config --static --cflags freetype2 cairo gtk+-3.0`
+	ifeq ($(shell uname),Darwin)
+		LDFLAGS += `pkg-config --libs freetype2 cairo gtk+-3.0`
+		CFLAGS += `pkg-config --cflags freetype2 cairo gtk+-3.0`
+	else
+		LDFLAGS += `pkg-config --static --libs freetype2 cairo gtk+-3.0`
+		CFLAGS += `pkg-config --static --cflags freetype2 cairo gtk+-3.0`
+	endif
 	LDFLAGS += -lm
 
 	DEVICE_SRCS += \
@@ -65,8 +70,13 @@ ifeq ($(SCENIC_LOCAL_TARGET),cairo-gtk)
 		c_src/device/cairo/cairo_gtk.c
 
 else ifeq ($(SCENIC_LOCAL_TARGET),cairo-fb)
-	LDFLAGS += `pkg-config --static --libs freetype2 cairo`
-	CFLAGS += `pkg-config --static --cflags freetype2 cairo`
+	ifeq ($(shell uname),Darwin)
+		LDFLAGS += `pkg-config --libs freetype2 cairo`
+		CFLAGS += `pkg-config --cflags freetype2 cairo`
+	else
+		LDFLAGS += `pkg-config --static --libs freetype2 cairo`
+		CFLAGS += `pkg-config --static --cflags freetype2 cairo`
+	endif
 	LDFLAGS += -lm
 	CFLAGS ?= -O2 -Wall -Wextra -Wno-unused-parameter -pedantic
 	CFLAGS += -std=gnu99
