@@ -56,7 +56,7 @@ ifeq ($(SCENIC_LOCAL_TARGET),cairo-gtk)
 		CFLAGS += -g
 	endif
 
-	ifeq ($(shell uname),Darwin)
+	ifeq ($(UNAME_S),Darwin)
 		LDFLAGS += `pkg-config --libs freetype2 cairo gtk+-3.0`
 		CFLAGS += `pkg-config --cflags freetype2 cairo gtk+-3.0`
 	else
@@ -70,7 +70,7 @@ ifeq ($(SCENIC_LOCAL_TARGET),cairo-gtk)
 		c_src/device/cairo/cairo_gtk.c
 
 else ifeq ($(SCENIC_LOCAL_TARGET),cairo-fb)
-	ifeq ($(shell uname),Darwin)
+	ifeq ($(UNAME_S),Darwin)
 		LDFLAGS += `pkg-config --libs freetype2 cairo`
 		CFLAGS += `pkg-config --cflags freetype2 cairo`
 	else
@@ -112,7 +112,7 @@ $(info )
 	ifneq ($(OS),Windows_NT)
 		CFLAGS += -fPIC
 
-		ifeq ($(shell uname),Darwin)
+		ifeq ($(UNAME_S),Darwin)
 			LDFLAGS += -framework Cocoa -framework OpenGL -Wno-deprecated
 		else
 			LDFLAGS += -lGL -lm -lrt

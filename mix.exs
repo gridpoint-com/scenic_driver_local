@@ -66,15 +66,20 @@ defmodule Scenic.Driver.Local.MixProject do
   end
 
   defp make_env() do
+    {_, os} = :os.type()
+    uname_s = os |> Atom.to_string() |> String.capitalize()
+
+    base = %{"UNAME_S" => uname_s}
+
     case System.get_env("ERL_EI_INCLUDE_DIR") do
       nil ->
-        %{
+        Map.merge(base, %{
           "ERL_EI_INCLUDE_DIR" => "#{:code.root_dir()}/usr/include",
           "ERL_EI_LIBDIR" => "#{:code.root_dir()}/usr/lib"
-        }
+        })
 
       _ ->
-        %{}
+        base
     end
   end
 
